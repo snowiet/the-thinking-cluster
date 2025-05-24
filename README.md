@@ -70,9 +70,9 @@ I wanted to learn DevOps **hands-on** — not from courses or checkboxes, but by
 ### ✅ Completed
 - Grafana dashboards up and running  
 - Exporter metrics working on WSL + Azure
+- Alerts with Alertmanager
 
 ### 🔄 In Progress
-- Alerts with Alertmanager  
 - Loki log aggregation  
 - Dashboard provisioning via config  
 - Self-healing container logic
