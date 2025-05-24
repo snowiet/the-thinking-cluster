@@ -9,3 +9,5 @@ alertmanager_data/
 # OS cruft
 .DS_Store
 Thumbs.db
+
+prometheus_inspect.txt
