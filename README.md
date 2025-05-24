@@ -10,7 +10,7 @@
 
 - 🧪 **Prometheus** — metrics scraping  
 - 📊 **Grafana** — dashboards and visualization  
-- 📢 **Alertmanager** — alert routing *(coming soon)*  
+- 📢 **Alertmanager** — alert routing  
 - 🧾 **Node Exporter** — Linux system metrics  
 - ⚙️ **Docker Compose** — reproducible infra setup  
 - 💥 **dmesg crash logs** — captured and archived for post-mortem analysis
@@ -49,6 +49,7 @@ Access services:
 - Grafana → [http://localhost:3000](http://localhost:3000)  
 - Prometheus → [http://localhost:9090](http://localhost:9090)  
 - Node Exporter → [http://localhost:9100](http://localhost:9100)
+- Alert Manager -> [http://localhost:9093](http://localhost:9093)
 
 ---
 
