@@ -36,6 +36,10 @@ I wanted to learn DevOps **hands-on** — not from courses or checkboxes, but by
 
 ---
 
+⚙️ This stack is now hosted outside WSL (D:/Documents/...) and runs independently via Docker Desktop.
+This allows for persistent local monitoring — even when WSL is shut down — and simulates a lightweight production environment.
+Ive abandoned the .bashrc though, Id have to figure out a way to version control it alongside git. 
+
 ## 🛣️ Roadmap
 
 ### ✅ Completed
