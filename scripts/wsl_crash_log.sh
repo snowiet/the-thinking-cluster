@@ -1,8 +1,16 @@
 #!/bin/bash
 
+# WSL Backup and Crash Handler Script
+# This script handles WSL crash logging and creates backups of project components
+# It also cleans up backups older than 3 days
+
 STAMP_FILE="$HOME/.wsl_last_exit_clean"
 CRASH_LOG_DIR="/mnt/d/documents/the-thinking-cluster/logs/dmesg"
 mkdir -p "$CRASH_LOG_DIR"
+
+# Clean up old backups (older than 3 days)
+BACKUP_ROOT="$PROJECT_ROOT/backups"
+find "$BACKUP_ROOT" -maxdepth 1 -type d -mtime +3 -exec rm -rf {} \;
 
 if [ ! -f "$STAMP_FILE" ]; then
   LOG_FILE="$CRASH_LOG_DIR/dmesg_$(date +%F_%H-%M-%S).log"
