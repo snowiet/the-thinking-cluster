@@ -3,20 +3,20 @@ groups:
     rules:
       - alert: CPU:MildUsage
         expr: 100 - (avg by(instance)(rate(node_cpu_seconds_total{mode="idle"}[1m])) * 100) > 20
-        for: 30s
+        for: 10s
         labels:
           severity: warning
         annotations:
           summary: "Mild CPU usage detected on {{ $labels.instance }}"
-          description: "CPU usage is above 20% for the last 30s. "
+          description: "CPU usage is above 20% for the last 10s. "
 
   - name: High CPU Alert
     rules:
       - alert: CPU:HighUsage
         expr: (100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[1m])) * 100)) > 80
-        for: 30s
+        for: 10s
         labels:
           severity: warning
         annotations:
           summary: "High CPU usage on {{ $labels.instance }}"
-          description: "CPU usage is above 80% for the last 30s."
+          description: "CPU usage is above 80% for the last 10s."

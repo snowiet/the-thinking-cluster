@@ -1,8 +1,10 @@
 global:
-  resolve_timeout: 1m
+  resolve_timeout: 5m
 
 route:
-  receiver: 'noop'
+  receiver: 'default'
 
 receivers:
-  - name: 'noop'
+  - name: 'default'
+    webhook_configs:
+      - url: 'http://localhost:5001/'  # We'll plug something here later
