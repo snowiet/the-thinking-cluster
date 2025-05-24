@@ -1,0 +1,11 @@
+# Docker
+*.log
+.env
+grafana_data/
+prometheus_data/
+node_exporter_data/
+alertmanager_data/
+
+# OS cruft
+.DS_Store
+Thumbs.db
