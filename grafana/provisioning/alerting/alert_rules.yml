@@ -1,0 +1,134 @@
+groups:
+  - name: Mild CPU Alert
+    org_id: 1
+    folder: General
+    interval: 10s
+    rules:
+      - uid: mild_cpu_usage
+        title: CPU:MildUsage
+        condition: C
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 60
+              to: 0
+            datasourceUid: prometheus
+            model:
+              expr: 100 - (avg by(instance)(rate(node_cpu_seconds_total{mode="idle"}[1m])) * 100)
+              format: time_series
+              interval: ""
+              intervalFactor: 2
+              refId: A
+          - refId: B
+            relativeTimeRange:
+              from: 0
+              to: 0
+            datasourceUid: -100
+            model:
+              type: classic_conditions
+              conditions:
+                - type: query
+                  query:
+                    params:
+                      - A
+                      - 20
+                  reducer:
+                    type: avg
+                  evaluator:
+                    type: gt
+                    params:
+                      - 20
+              refId: B
+          - refId: C
+            relativeTimeRange:
+              from: 0
+              to: 0
+            datasourceUid: -100
+            model:
+              type: classic_conditions
+              conditions:
+                - type: query
+                  query:
+                    params:
+                      - B
+                      - 0
+                  reducer:
+                    type: avg
+                  evaluator:
+                    type: gt
+                    params:
+                      - 0
+              refId: C
+        for: 10s
+        annotations:
+          summary: "Mild CPU usage detected on {{ $labels.instance }}"
+          description: "CPU usage is above 20% for the last 10s."
+        labels:
+          severity: warning
+
+  - name: High CPU Alert
+    org_id: 1
+    folder: General
+    interval: 10s
+    rules:
+      - uid: high_cpu_usage
+        title: CPU:HighUsage
+        condition: C
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 60
+              to: 0
+            datasourceUid: prometheus
+            model:
+              expr: 100 - (avg by(instance)(rate(node_cpu_seconds_total{mode="idle"}[1m])) * 100)
+              format: time_series
+              interval: ""
+              intervalFactor: 2
+              refId: A
+          - refId: B
+            relativeTimeRange:
+              from: 0
+              to: 0
+            datasourceUid: -100
+            model:
+              type: classic_conditions
+              conditions:
+                - type: query
+                  query:
+                    params:
+                      - A
+                      - 80
+                  reducer:
+                    type: avg
+                  evaluator:
+                    type: gt
+                    params:
+                      - 80
+              refId: B
+          - refId: C
+            relativeTimeRange:
+              from: 0
+              to: 0
+            datasourceUid: -100
+            model:
+              type: classic_conditions
+              conditions:
+                - type: query
+                  query:
+                    params:
+                      - B
+                      - 0
+                  reducer:
+                    type: avg
+                  evaluator:
+                    type: gt
+                    params:
+                      - 0
+              refId: C
+        for: 10s
+        annotations:
+          summary: "High CPU usage on {{ $labels.instance }}"
+          description: "CPU usage is above 80% for the last 10s."
+        labels:
+          severity: critical

@@ -1,3 +1,7 @@
+# The Thinking Cluster
+
+A comprehensive monitoring stack using Grafana, Prometheus, Loki, and more.
+
 ## 🚀 Getting Started
 
 Clone the repo:
@@ -10,7 +14,7 @@ cd the-thinking-cluster
 Bring up the stack:
 
 ```bash
-docker-compose -f compose/monitoring/docker-compose.yml up -d
+docker compose up -d
 ```
 
 Access services:
@@ -21,14 +25,32 @@ Access services:
 - Alertmanager → [http://localhost:9093](http://localhost:9093)  
 - Loki (API) → [http://localhost:3100](http://localhost:3100) *(used by Grafana, no UI)*
 
----
+## 📁 Project Structure
+
+```
+.
+├── docker-compose.yml          # Main compose file for all services
+├── grafana/                    # Grafana configuration
+│   ├── provisioning/          # Auto-provisioning configs
+│   │   ├── alerting/         # Alert rules and contact points
+│   │   ├── dashboards/       # Dashboard definitions
+│   │   └── datasources/      # Data source configurations
+│   └── dashboards/           # Custom dashboard JSON files
+├── prometheus/                # Prometheus configuration
+│   ├── alertmanager/         # Alertmanager configs
+│   ├── prometheus.yml        # Prometheus main config
+│   └── promtail-config.yaml  # Promtail configuration
+├── scripts/                   # Utility scripts
+│   └── auto_reload_prometheus.sh
+├── logs/                     # Application logs
+├── config/                   # System configurations
+└── backups/                  # Backup storage
+```
 
 ## 🌐 Real-Time Targets
 
 - `WSL_Machine` — local Windows Subsystem for Linux  
 - `Azure_VM` — mirrored remote instance of the stack
-
----
 
 ## 🛣️ Roadmap
 
@@ -42,5 +64,26 @@ Access services:
 - Dashboard provisioning via config  
 - Self-healing container logic  
 - Promtail filtering logic for logs
+
+## 🔧 Maintenance
+
+### Backup
+```bash
+./scripts/backup.sh
+```
+
+### Restore
+```bash
+./scripts/restore.sh <backup_date>
+```
+
+### Logs
+- System logs: `logs/system/`
+- Crash logs: `logs/crashes/`
+- Kernel logs: `logs/dmesg/`
+
+## 📝 License
+
+MIT License - see LICENSE file for details
 
 ---
