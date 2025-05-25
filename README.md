@@ -32,7 +32,7 @@ Access services:
 ├── docker-compose.yml          # Main compose file for all services
 ├── grafana/                    # Grafana configuration
 │   ├── provisioning/          # Auto-provisioning configs
-│   │   ├── alerting/         # Alert rules and contact points
+│   │   ├── alerting/         # Alert rules and contact points (currently disabled)
 │   │   ├── dashboards/       # Dashboard definitions
 │   │   └── datasources/      # Data source configurations
 │   └── dashboards/           # Custom dashboard JSON files
@@ -41,40 +41,51 @@ Access services:
 │   ├── prometheus.yml        # Prometheus main config
 │   └── promtail-config.yaml  # Promtail configuration
 ├── scripts/                   # Utility scripts
-│   └── auto_reload_prometheus.sh
-├── logs/                     # Application logs
+│   ├── wsl_crash_handler.sh  # Handles WSL crashes and recovery
+│   ├── backup_manager.sh     # Manages system backups
+│   ├── edit_local_bash.sh    # Edits local bash configuration
+│   └── setup_bashrc.sh       # Sets up bash environment
 ├── config/                   # System configurations
-└── backups/                  # Backup storage
+│   ├── local/               # Local configuration files
+│   └── bashrc              # Bash configuration
+├── logs/                    # Application logs
+└── backups/                 # Backup storage
 ```
 
-## 🌐 Real-Time Targets
+## 🛠️ Scripts
 
-- `WSL_Machine` — local Windows Subsystem for Linux  
-- `Azure_VM` — mirrored remote instance of the stack
+### `wsl_crash_handler.sh`
+- Handles WSL crashes and recovery
+- Monitors system stability
+- Automatically restarts services if needed
 
-## 🛣️ Roadmap
+### `backup_manager.sh`
+- Manages system backups
+- Creates timestamped backups
+- Handles backup rotation
 
-### ✅ Completed
-- Grafana dashboards up and running  
-- Exporter metrics working on WSL + Azure  
-- Alerts with Alertmanager  
-- Loki log aggregation (MVP working)
+### `edit_local_bash.sh`
+- Edits local bash configuration
+- Updates environment variables
+- Manages shell aliases
 
-### 🔄 In Progress
-- Dashboard provisioning via config  
-- Self-healing container logic  
-- Promtail filtering logic for logs
+### `setup_bashrc.sh`
+- Sets up bash environment
+- Configures shell preferences
+- Installs required tools
 
-## 🔧 Maintenance
+## ⚠️ Known Issues
+
+### Grafana Alerting
+- Alerting system is currently disabled
+- Contact points configuration needs to be fixed
+- Alert rules provisioning is pending
+
+## 🔄 Maintenance
 
 ### Backup
 ```bash
-./scripts/backup.sh
-```
-
-### Restore
-```bash
-./scripts/restore.sh <backup_date>
+./scripts/backup_manager.sh
 ```
 
 ### Logs
@@ -82,6 +93,22 @@ Access services:
 - Crash logs: `logs/crashes/`
 - Kernel logs: `logs/dmesg/`
 
-###
-Grafana Alerting system is not working.
-Disabled the alerting yml files.
+## 🛣️ Roadmap
+
+### ✅ Completed
+- Grafana dashboards up and running  
+- Exporter metrics working on WSL + Azure  
+- Loki log aggregation (MVP working)
+- Basic monitoring setup
+
+### 🔄 In Progress
+- Fix Grafana alerting system
+- Implement proper backup rotation
+- Enhance WSL crash handling
+- Improve log management
+
+### 📋 Planned
+- Dashboard provisioning via config  
+- Self-healing container logic  
+- Promtail filtering logic for logs
+- Automated backup testing
