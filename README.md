@@ -82,8 +82,6 @@ Access services:
 - Crash logs: `logs/crashes/`
 - Kernel logs: `logs/dmesg/`
 
-## 📝 License
-
-MIT License - see LICENSE file for details
-
----
+###
+Grafana Alerting system is not working.
+Disabled the alerting yml files.
