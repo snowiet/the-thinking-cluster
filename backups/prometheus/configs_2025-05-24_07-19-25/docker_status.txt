@@ -1,5 +1,0 @@
-CONTAINER ID   IMAGE                       COMMAND                  CREATED        STATUS          PORTS                                         NAMES
-ac2bc7de48f7   prom/alertmanager           "/bin/alertmanager -…"   14 hours ago   Up 57 minutes   0.0.0.0:9093->9093/tcp, [::]:9093->9093/tcp   alertmanager
-976c48d7e56c   prom/prometheus:latest      "/bin/prometheus --c…"   35 hours ago   Up 57 minutes   0.0.0.0:9090->9090/tcp, [::]:9090->9090/tcp   prometheus
-70709be4e043   grafana/grafana:latest      "/run.sh"                35 hours ago   Up 57 minutes   0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp   grafana
-2972dd2f57bf   prom/node-exporter:latest   "/bin/node_exporter"     35 hours ago   Up 57 minutes   0.0.0.0:9100->9100/tcp, [::]:9100->9100/tcp   node-exporter

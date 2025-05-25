@@ -11,3 +11,4 @@ alertmanager_data/
 Thumbs.db
 
 prometheus_inspect.txt
+config/local/
