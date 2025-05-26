@@ -48,7 +48,7 @@ services:
     ports:
       - "9093:9093"
     volumes:
-      - ./prometheus/alertmanager:/etc/alertmanager/
+      - ./alertmanager:/etc/alertmanager/
     command:
       - '--config.file=/etc/alertmanager/alertmanager.yml'
     restart: unless-stopped
@@ -65,9 +65,8 @@ services:
     image: grafana/promtail:2.9.4
     container_name: promtail
     volumes:
-      - /var/log:/var/log
-      - ./prometheus/promtail-config.yaml:/etc/promtail/promtail.yaml
-    command: -config.file=/etc/promtail/promtail.yaml
+      - ./promtail/promtail-config.yaml:/etc/promtail/promtail-config.yaml
+    command: -config.file=/etc/promtail/promtail-config.yaml
     restart: unless-stopped
 
 volumes:

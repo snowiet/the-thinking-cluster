@@ -29,27 +29,51 @@ Access services:
 
 ```
 .
-├── docker-compose.yml          # Main compose file for all services
-├── grafana/                    # Grafana configuration
-│   ├── provisioning/          # Auto-provisioning configs
-│   │   ├── alerting/         # Alert rules and contact points (currently disabled)
-│   │   ├── dashboards/       # Dashboard definitions
-│   │   └── datasources/      # Data source configurations
-│   └── dashboards/           # Custom dashboard JSON files
-├── prometheus/                # Prometheus configuration
-│   ├── alertmanager/         # Alertmanager configs
-│   ├── prometheus.yml        # Prometheus main config
-│   └── promtail-config.yaml  # Promtail configuration
-├── scripts/                   # Utility scripts
-│   ├── wsl_crash_handler.sh  # Handles WSL crashes and recovery
-│   ├── backup_manager.sh     # Manages system backups
-│   ├── edit_local_bash.sh    # Edits local bash configuration
-│   └── setup_bashrc.sh       # Sets up bash environment
-├── config/                   # System configurations
-│   ├── local/               # Local configuration files
-│   └── bashrc              # Bash configuration
-├── logs/                    # Application logs
-└── backups/                 # Backup storage
+├── docker-compose.yml               # Main stack definition
+│
+├── alertmanager/                    # Alertmanager configuration (standalone)
+│   └── alertmanager.yml
+│
+├── promtail/                         # Promtail log forwarding config
+│   └── promtail-config.yaml
+│
+├── prometheus/                      # Prometheus metrics stack
+│   ├── prometheus.yml               # Main Prometheus config
+│   └── alert_rules.yml              # Alerting rules
+│
+├── grafana/                         # Grafana dashboards & provisioning
+│   ├── dashboards/                  # Raw dashboard JSON exports
+│   │   └── 1860Template.json
+│   └── provisioning/                # Provisioning configs
+│       ├── alerting/                # Alerting config (.bak = currently inactive)
+│       │   ├── contact-points.yml.bak
+│       │   ├── notification-policies.yml.bak
+│       │   └── notification-templates.yml.bak
+│       ├── dashboards/              # Dashboard loader
+│       │   └── dashboards.yml
+│       └── datasources/             # Data source loader
+│           └── datasource.yml
+│
+├── scripts/                         # Utility + automation scripts
+│   ├── backup_manager.sh
+│   ├── edit_local_bash.sh
+│   ├── setup_bashrc.sh
+│   └── wsl_crash_handler.sh
+│
+├── config/                          # Shell config overrides (non-service)
+│   ├── bashrc
+│   └── local/
+│       ├── bash_aliases.local
+│       ├── bash_profile.local
+│       └── bashrc.local
+│
+├── logs/                            # Local logs from crash reports etc.
+│   ├── crashes/
+│   ├── dmesg/
+│   └── system/
+│
+└── backups/                         # Auto-archived config & log snapshots
+    └── [timestamped folders]        # Each contains .tar.gz of configs & logs
 ```
 
 ## 🛠️ Scripts
