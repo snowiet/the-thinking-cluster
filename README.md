@@ -72,16 +72,6 @@ Access services:
 - Creates timestamped backups
 - Handles backup rotation
 
-### `edit_local_bash.sh`
-- Edits local bash configuration
-- Updates environment variables
-- Manages shell aliases
-
-### `setup_bashrc.sh`
-- Sets up bash environment
-- Configures shell preferences
-- Installs required tools
-
 ## ⚠️ Known Issues
 
 ### Grafana Alerting
