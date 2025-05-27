@@ -29,51 +29,35 @@ Access services:
 
 ```
 .
-├── docker-compose.yml               # Main stack definition
-│
-├── alertmanager/                    # Alertmanager configuration (standalone)
+├── README.md
+├── alertmanager
 │   └── alertmanager.yml
-│
-├── promtail/                         # Promtail log forwarding config
-│   └── promtail-config.yaml
-│
-├── prometheus/                      # Prometheus metrics stack
-│   ├── prometheus.yml               # Main Prometheus config
-│   └── alert_rules.yml              # Alerting rules
-│
-├── grafana/                         # Grafana dashboards & provisioning
-│   ├── dashboards/                  # Raw dashboard JSON exports
-│   │   └── 1860Template.json
-│   └── provisioning/                # Provisioning configs
-│       ├── alerting/                # Alerting config (.bak = currently inactive)
+├── backups
+├── docker-compose.yml
+├── grafana
+│   ├── dashboards
+│   │   └── Essentials.json
+│   └── provisioning
+│       ├── alerting
 │       │   ├── contact-points.yml.bak
 │       │   ├── notification-policies.yml.bak
 │       │   └── notification-templates.yml.bak
-│       ├── dashboards/              # Dashboard loader
+│       ├── dashboards
 │       │   └── dashboards.yml
-│       └── datasources/             # Data source loader
+│       └── datasources
 │           └── datasource.yml
-│
-├── scripts/                         # Utility + automation scripts
-│   ├── backup_manager.sh
-│   ├── edit_local_bash.sh
-│   ├── setup_bashrc.sh
-│   └── wsl_crash_handler.sh
-│
-├── config/                          # Shell config overrides (non-service)
-│   ├── bashrc
-│   └── local/
-│       ├── bash_aliases.local
-│       ├── bash_profile.local
-│       └── bashrc.local
-│
-├── logs/                            # Local logs from crash reports etc.
-│   ├── crashes/
-│   ├── dmesg/
-│   └── system/
-│
-└── backups/                         # Auto-archived config & log snapshots
-    └── [timestamped folders]        # Each contains .tar.gz of configs & logs
+├── logs
+│   ├── crashes
+│   └── system
+├── prometheus
+│   ├── alert_rules.yml
+│   ├── alertmanager
+│   └── prometheus.yml
+├── promtail
+│   └── promtail-config.yaml
+└── scripts
+    ├── backup_manager.sh
+    └── wsl_crash_handler.sh
 ```
 
 ## 🛠️ Scripts
