@@ -1,7 +1,0 @@
-Backup created on Sat May 24 23:05:22 AEST 2025
-Contents:
-/mnt/d/documents/the-thinking-cluster/backups/20250524_230521:
-compose_configs.tar.gz
-logs.tar.gz
-manifest.txt
-scripts.tar.gz

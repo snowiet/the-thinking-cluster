@@ -4,7 +4,7 @@
 # Monitors and logs WSL crashes, providing diagnostic information
 
 # Configuration
-PROJECT_ROOT="/mnt/d/documents/the-thinking-cluster"
+PROJECT_ROOT="$HOME/the-thinking-cluster"
 STAMP_FILE="$HOME/.wsl_last_exit_clean"
 CRASH_LOG_DIR="$PROJECT_ROOT/logs/crashes"
 SYSTEM_LOG_DIR="$PROJECT_ROOT/logs/system"

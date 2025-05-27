@@ -5,10 +5,10 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
-      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
-      - ./grafana/dashboards:/var/lib/grafana/dashboards
-      - ./grafana/provisioning/alerting:/etc/grafana/provisioning/alerting
+      - /home/gnsdud95/the-thinking-cluster/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - /home/gnsdud95/the-thinking-cluster/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - /home/gnsdud95/the-thinking-cluster/grafana/dashboards:/etc/grafana/dashboards
+      - /home/gnsdud95/the-thinking-cluster/grafana/provisioning/alerting:/etc/grafana/provisioning/alerting
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin

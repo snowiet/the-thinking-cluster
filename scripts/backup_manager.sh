@@ -4,7 +4,7 @@
 # Handles automated backups of services and cleanup of old backups
 
 # Configuration
-PROJECT_ROOT="/mnt/d/documents/the-thinking-cluster"
+PROJECT_ROOT="$HOME/the-thinking-cluster"
 BACKUP_ROOT="$PROJECT_ROOT/backups"
 TIMESTAMP=$(date +%Y-%m-%d-%H%M)
 BACKUP_DIR="$BACKUP_ROOT/$TIMESTAMP"
