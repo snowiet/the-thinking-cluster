@@ -39,9 +39,9 @@ Access services:
 │   │   └── Essentials.json
 │   └── provisioning
 │       ├── alerting
-│       │   ├── contact-points.yml.bak
-│       │   ├── notification-policies.yml.bak
-│       │   └── notification-templates.yml.bak
+│       │   ├── contact-points.yml
+│       │   ├── notification-policies.yml
+│       │   └── notification-templates.yml
 │       ├── dashboards
 │       │   └── dashboards.yml
 │       └── datasources
@@ -75,7 +75,6 @@ Access services:
 ## ⚠️ Known Issues
 
 ### Grafana Alerting
-- Alerting system is currently disabled
 - Contact points configuration needs to be fixed
 - Alert rules provisioning is pending
 
@@ -98,9 +97,9 @@ Access services:
 - Exporter metrics working on WSL + Azure  
 - Loki log aggregation (MVP working)
 - Basic monitoring setup
+- Grafana alerting system
 
 ### 🔄 In Progress
-- Fix Grafana alerting system
 - Implement proper backup rotation
 - Enhance WSL crash handling
 - Improve log management
