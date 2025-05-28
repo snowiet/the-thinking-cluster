@@ -9,10 +9,38 @@ clients:
   - url: http://loki:3100/loki/api/v1/push
 
 scrape_configs:
-  - job_name: system
+  - job_name: system_logs
     static_configs:
       - targets:
           - localhost
         labels:
-          job: varlogs
-          __path__: /var/log/*.log
+          job: system_logs
+          environment: wsl
+          __path__: /home/gnsdud95/the-thinking-cluster/logs/system/*.log
+
+  - job_name: crash_logs
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: crash_logs
+          environment: wsl
+          __path__: /home/gnsdud95/the-thinking-cluster/logs/crashes/*.log
+
+  - job_name: docker_logs
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: docker_logs
+          environment: wsl
+          __path__: /var/lib/docker/containers/*/*.log
+
+  - job_name: wsl_logs
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: wsl_logs
+          environment: wsl
+          __path__: /var/log/wsl/*.log
