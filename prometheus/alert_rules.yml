@@ -30,13 +30,3 @@ groups:
         annotations:
           summary: "High disk usage on {{ $labels.instance }}"
           description: "Disk usage is above 85% for 5 minutes."
-      
-      # Always firing for testing
-      - alert: AlwaysFiring
-        expr: vector(1)
-        for: 10s
-        labels:
-          severity: critical
-        annotations:
-          summary: "Test Alert"
-          description: "This alert is always firing. Used for testing email delivery."
