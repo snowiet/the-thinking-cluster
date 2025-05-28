@@ -4,17 +4,21 @@
 # Handles automated backups of services and cleanup of old backups
 
 # Configuration
-PROJECT_ROOT="$HOME/the-thinking-cluster"
+# Determine Project Root dynamically
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)" # Assumes scripts/ is one level below project root
+
 BACKUP_ROOT="$PROJECT_ROOT/backups"
 TIMESTAMP=$(date +%Y-%m-%d-%H%M)
 BACKUP_DIR="$BACKUP_ROOT/$TIMESTAMP"
 
-# List of services to backup
-declare -A SERVICES=(
-    ["grafana"]="grafana_data"
-    ["prometheus"]="prometheus_data"
-    ["node_exporter"]="node_exporter_data"
-    ["alertmanager"]="alertmanager_data"
+# List of service configuration directories to backup (relative to PROJECT_ROOT)
+declare -A SERVICES_TO_BACKUP_CONFIGS=(\
+    ["grafana"]="grafana" \
+    ["prometheus"]="prometheus" \
+    ["alertmanager"]="alertmanager" \
+    ["loki"]="loki" \
+    ["promtail"]="promtail" \
 )
 
 # Create backup directory
@@ -25,26 +29,27 @@ cleanup_old_backups() {
     echo "🧹 Cleaning up old backups..."
     
     # Remove backups older than 3 days
-    find "$BACKUP_ROOT" -maxdepth 1 -type d -mtime +3 -exec rm -rf {} \;
+    find "$BACKUP_ROOT" -maxdepth 1 -type d -mtime +3 -exec rm -rf {} \\;
     
-    # Remove auto-generated backups older than 45 minutes
-    find "$BACKUP_ROOT" -maxdepth 1 -type d -name "auto-*" -mmin +45 -exec rm -rf {} \;
+    # Remove auto-generated backups older than 45 minutes (if applicable to your naming)
+    # find "$BACKUP_ROOT" -maxdepth 1 -type d -name "auto-*" -mmin +45 -exec rm -rf {} \\;
     
     # Remove empty directories
     find "$BACKUP_ROOT" -type d -empty -delete
 }
 
-# Function to backup a service
-backup_service() {
+# Function to backup a service's configuration
+backup_service_config() {
     local service_name=$1
-    local service_dir=$2
+    local service_config_dir_relative=$2 # Relative path from PROJECT_ROOT e.g., "grafana"
+    local service_config_full_path="$PROJECT_ROOT/$service_config_dir_relative"
     
-    if [ -d "$PROJECT_ROOT/$service_dir" ]; then
-        echo "📦 Backing up $service_name..."
-        tar -czf "$BACKUP_DIR/${service_name}.tar.gz" -C "$PROJECT_ROOT" "$service_dir"
+    if [ -d "$service_config_full_path" ]; then
+        echo "📦 Backing up $service_name configuration from '$service_config_dir_relative'..."
+        tar -czf "$BACKUP_DIR/${service_name}_config.tar.gz" -C "$PROJECT_ROOT" "$service_config_dir_relative"
         return 0
     else
-        echo "⚠️  Warning: $service_name directory not found"
+        echo "⚠️  Warning: $service_name configuration directory '$service_config_full_path' not found"
         return 1
     fi
 }
@@ -52,15 +57,17 @@ backup_service() {
 # Main backup process
 echo "🚀 Starting backup process..."
 
-# Backup each service
-for service_name in "${!SERVICES[@]}"; do
-    backup_service "$service_name" "${SERVICES[$service_name]}"
+# Backup each service's configuration
+for service_name in "${!SERVICES_TO_BACKUP_CONFIGS[@]}"; do
+    backup_service_config "$service_name" "${SERVICES_TO_BACKUP_CONFIGS[$service_name]}"
 done
 
-# Backup configuration files
-if [ -d "$PROJECT_ROOT/compose" ]; then
-    echo "📦 Backing up compose configurations..."
-    tar -czf "$BACKUP_DIR/compose_configs.tar.gz" -C "$PROJECT_ROOT" compose/
+# Backup docker-compose.yml file
+if [ -f "$PROJECT_ROOT/docker-compose.yml" ]; then
+    echo "📦 Backing up docker-compose.yml..."
+    cp "$PROJECT_ROOT/docker-compose.yml" "$BACKUP_DIR/docker-compose.yml"
+else
+    echo "⚠️  Warning: docker-compose.yml not found at $PROJECT_ROOT/docker-compose.yml"
 fi
 
 if [ -d "$PROJECT_ROOT/scripts" ]; then
@@ -71,7 +78,7 @@ fi
 # Backup environment files
 if [ -f "$PROJECT_ROOT/.env" ]; then
     echo "📦 Backing up environment file..."
-    cp "$PROJECT_ROOT/.env" "$BACKUP_DIR/"
+    cp "$PROJECT_ROOT/.env" "$BACKUP_DIR/.env" # Copy to backup dir, not just root of it
 fi
 
 # Create manifest

@@ -1,6 +1,6 @@
 # The Thinking Cluster
 
-A comprehensive monitoring stack using Grafana, Prometheus, Loki, and more.
+A comprehensive monitoring stack using Grafana, Prometheus, Loki, Promtail, and Alertmanager.
 
 ## 🚀 Getting Started
 
@@ -19,11 +19,12 @@ docker compose up -d
 
 Access services:
 
-- Grafana → [http://localhost:3000](http://localhost:3000)  
-- Prometheus → [http://localhost:9090](http://localhost:9090)  
-- Node Exporter → [http://localhost:9100](http://localhost:9100)  
-- Alertmanager → [http://localhost:9093](http://localhost:9093)  
-- Loki (API) → [http://localhost:3100](http://localhost:3100) *(used by Grafana, no UI)*
+- Grafana → [http://localhost:3000](http://localhost:3000)
+- Prometheus → [http://localhost:9090](http://localhost:9090)
+- Node Exporter → [http://localhost:9100](http://localhost:9100)
+- Alertmanager → [http://localhost:9093](http://localhost:9093)
+- Loki → [http://localhost:3101](http://localhost:3101) (API for Grafana, direct UI available at `/loki/api/v1/status` or similar, depending on version)
+- Promtail → (No direct access - ships logs to Loki)
 
 ## 📁 Project Structure
 
@@ -36,7 +37,7 @@ Access services:
 ├── docker-compose.yml
 ├── grafana
 │   ├── dashboards
-│   │   └── Essentials.json
+│   │   └── Essentials.json // Assuming this is a key dashboard
 │   └── provisioning
 │       ├── alerting
 │       │   ├── contact-points.yml
@@ -46,12 +47,14 @@ Access services:
 │       │   └── dashboards.yml
 │       └── datasources
 │           └── datasource.yml
+├── loki
+│   └── local-config.yaml // Or other Loki config file
+├── loki-data // Loki data persistent volume
 ├── logs
 │   ├── crashes
 │   └── system
 ├── prometheus
 │   ├── alert_rules.yml
-│   ├── alertmanager
 │   └── prometheus.yml
 ├── promtail
 │   └── promtail-config.yaml
@@ -63,46 +66,46 @@ Access services:
 ## 🛠️ Scripts
 
 ### `wsl_crash_handler.sh`
-- Handles WSL crashes and recovery
-- Monitors system stability
-- Automatically restarts services if needed
+- Monitors and handles WSL (Windows Subsystem for Linux) stability issues.
+- Can be configured to restart services upon detecting a crash.
 
 ### `backup_manager.sh`
-- Manages system backups
-- Creates timestamped backups
-- Handles backup rotation
+- Manages backups for critical configuration and data.
+- Supports creation of timestamped backups and may include rotation logic.
 
 ## ⚠️ Known Issues
 
 ### Grafana Alerting
-- Contact points configuration needs to be fixed
-- Alert rules provisioning is pending
+- Contact points configuration may require verification or updates.
+- Ensure alert rules are correctly provisioned and tested.
 
 ## 🔄 Maintenance
 
 ### Backup
+To create a backup:
 ```bash
 ./scripts/backup_manager.sh
 ```
+Review `backup_manager.sh` for specific backup locations and rotation settings.
 
 ### Logs
 - System logs: `logs/system/`
 - Crash logs: `logs/crashes/`
-- Kernel logs: `logs/dmesg/`
+- Application logs for Loki are stored in the `loki-data` volume.
+- Check Promtail configuration (`promtail/promtail-config.yaml`) for log shipping paths.
 
 ## 🛣️ Roadmap
 
 ### ✅ Completed
-- Grafana dashboards up and running  
-- Exporter metrics working on WSL + Azure  
-- Loki log aggregation (MVP working)
-- Basic monitoring setup
-- Grafana alerting system
+- Grafana dashboards operational.
+- Node Exporter metrics collection functional (WSL + Azure if applicable).
+- Loki log aggregation (basic setup working).
+- Core monitoring stack (Prometheus, Grafana, Alertmanager) established.
 
 ### 🔄 In Progress
-- Implement proper backup rotation
-- Enhance WSL crash handling
-- Improve log management
+- Implementing robust backup rotation within `backup_manager.sh`.
+- Enhancing `wsl_crash_handler.sh` for more comprehensive recovery.
+- Improving log management strategies and configurations.
 
 ### 📋 Planned
 - Dashboard provisioning via config  

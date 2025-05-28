@@ -1,0 +1,15 @@
+# alertmanager/alertmanager.yml.template
+global:
+  smtp_smarthost: 'smtp.gmail.com:587'
+  smtp_from: '${GMAIL_USERNAME}'
+  smtp_auth_username: '${GMAIL_USERNAME}'
+  smtp_auth_password: '${GMAIL_APP_PASSWORD}'
+
+route:
+  receiver: 'email-notifications'
+
+receivers:
+  - name: 'email-notifications'
+    email_configs:
+      - to: '${GMAIL_USERNAME}'
+        send_resolved: true
