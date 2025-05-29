@@ -1,3 +1,7 @@
+> ⚠️ **Note:** This project is currently under active construction as part of a learning initiative.  
+> I'm prioritizing building over documentation until it's stable enough to write about.  
+> Last update: **29 May 2025**
+
 # The Thinking Cluster
 
 A comprehensive monitoring stack using Grafana, Prometheus, Loki, Promtail, and Alertmanager.
