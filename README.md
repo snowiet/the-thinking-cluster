@@ -37,19 +37,15 @@ Access services:
 ├── docker-compose.yml
 ├── grafana
 │   ├── dashboards
-│   │   └── Essentials.json // Assuming this is a key dashboard
+│   │   └── Essentials.json
 │   └── provisioning
-│       ├── alerting
-│       │   ├── contact-points.yml
-│       │   ├── notification-policies.yml
-│       │   └── notification-templates.yml
 │       ├── dashboards
 │       │   └── dashboards.yml
 │       └── datasources
 │           └── datasource.yml
 ├── loki
-│   └── local-config.yaml // Or other Loki config file
-├── loki-data // Loki data persistent volume
+│   └── local-config.yaml
+├── loki-data
 ├── logs
 │   ├── crashes
 │   └── system
@@ -60,18 +56,23 @@ Access services:
 │   └── promtail-config.yaml
 └── scripts
     ├── backup_manager.sh
+    ├── container_crash_monitor.sh
     └── wsl_crash_handler.sh
 ```
 
 ## 🛠️ Scripts
 
 ### `wsl_crash_handler.sh`
-- Monitors and handles WSL (Windows Subsystem for Linux) stability issues.
-- Can be configured to restart services upon detecting a crash.
+- Detects whether the system has closed abruptly
+- Captures and saves system + wsl logs to the logs directory
 
 ### `backup_manager.sh`
-- Manages backups for critical configuration and data.
-- Supports creation of timestamped backups and may include rotation logic.
+- Supports creation of timestamped backups
+- Handles both configuration and data backups
+
+### `container_crash_monitor.sh`
+- Detects containers in restarting state
+- Captures and saves container logs to the logs directory
 
 ## ⚠️ Known Issues
 
