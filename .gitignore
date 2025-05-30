@@ -17,7 +17,16 @@ config/local/
 
 # Loki data
 loki/chunks/
+!loki/chunks/.gitkeep
 loki/index/
+!loki/index/.gitkeep
 loki/wal/
+!loki/wal/.gitkeep
 loki/cache/
+!loki/cache/.gitkeep
 loki/boltdb-shipper/
+!loki/boltdb-shipper/.gitkeep
+loki/rules/
+!loki/rules/.gitkeep
+loki/compactor/
+!loki/compactor/.gitkeep
