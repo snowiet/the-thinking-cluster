@@ -50,11 +50,12 @@ services:
   loki:
     image: grafana/loki:2.9.4
     container_name: loki
+    user: "1000:1000"
     ports:
-      - "3101:3101"
+      - "3100:3100"
     volumes:
-      - ./loki:/etc/loki
-      - loki_data:/loki
+      - ./loki:/loki:rw
+      - ./loki/local-config.yaml:/etc/loki/local-config.yaml:ro
     command: -config.file=/etc/loki/local-config.yaml
     restart: unless-stopped
 
@@ -62,8 +63,12 @@ services:
     image: grafana/promtail:2.9.4
     container_name: promtail
     volumes:
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - ./promtail/promtail-config.yaml:/etc/promtail/promtail-config.yaml
+      - ./logs:/home/gnsdud95/the-thinking-cluster/logs
     command: -config.file=/etc/promtail/promtail-config.yaml
+    ports:
+      - "9080:9080"
     restart: unless-stopped
 
 volumes:

@@ -1,10 +1,13 @@
+# Expose metrics endpoint at port 9080
+# Disable gRPC server. No need for it yet —— until we set up multi-node.
 server:
   http_listen_port: 9080
   grpc_listen_port: 0
-
+ 
 positions:
-  filename: /tmp/positions.yaml
+  filename: /home/gnsdud95/the-thinking-cluster/logs/promtail-positions.yaml
 
+# Send logs to loki, at port 3100(Default loki port)
 clients:
   - url: http://loki:3100/loki/api/v1/push
 

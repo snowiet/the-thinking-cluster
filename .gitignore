@@ -6,6 +6,7 @@ prometheus_data/
 node_exporter_data/
 alertmanager_data/
 loki-data/
+logs/promtail-positions.yaml
 
 # OS cruft
 .DS_Store
