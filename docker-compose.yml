@@ -16,11 +16,6 @@ services:
     depends_on:
       - prometheus
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
 
   node-exporter:
     image: prom/node-exporter:latest
@@ -28,11 +23,6 @@ services:
     ports:
       - "9100:9100"
     restart: unless-stopped
-    healthcheck:
-     test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1"]
-     interval: 30s
-     timeout: 10s
-     retries: 3
 
   prometheus:
     image: prom/prometheus:latest
@@ -45,11 +35,6 @@ services:
     ports:
       - "9090:9090"
     restart: unless-stopped
-    healthcheck:
-     test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1"]
-     interval: 30s
-     timeout: 10s
-     retries: 3
 
   alertmanager:
     image: prom/alertmanager
@@ -61,11 +46,6 @@ services:
     command:
       - '--config.file=/etc/alertmanager/alertmanager.yml'
     restart: unless-stopped
-    healthcheck:
-     test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1"]
-     interval: 30s
-     timeout: 10s
-     retries: 3
 
   loki:
     image: grafana/loki:2.9.4
@@ -77,11 +57,6 @@ services:
       - loki_data:/loki
     command: -config.file=/etc/loki/local-config.yaml
     restart: unless-stopped
-    healthcheck:
-     test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1"]
-     interval: 30s
-     timeout: 10s
-     retries: 3
 
   promtail:
     image: grafana/promtail:2.9.4
@@ -90,11 +65,6 @@ services:
       - ./promtail/promtail-config.yaml:/etc/promtail/promtail-config.yaml
     command: -config.file=/etc/promtail/promtail-config.yaml
     restart: unless-stopped
-    healthcheck:
-     test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1"]
-     interval: 30s
-     timeout: 10s
-     retries: 3
 
 volumes:
   grafana_data:
