@@ -1,17 +1,25 @@
-# Expose metrics endpoint at port 9080
-# Disable gRPC server. No need for it yet —— until we set up multi-node.
+# Promtail Configuration
+# Purpose: Configures log collection and shipping to Loki
+# Impact of removal: No log collection from various sources
+
+# Server configuration
 server:
-  http_listen_port: 9080
-  grpc_listen_port: 0
- 
+  http_listen_port: 9080  # Metrics endpoint port
+  grpc_listen_port: 0  # Disable gRPC server (not needed for single-node setup)
+
+# Position tracking configuration
 positions:
-  filename: /home/gnsdud95/the-thinking-cluster/logs/promtail-positions.yaml
+  filename: /home/gnsdud95/the-thinking-cluster/logs/promtail-positions.yaml  # Where to store file read positions
 
-# Send logs to loki, at port 3100(Default loki port)
+# Loki client configuration
 clients:
-  - url: http://loki:3100/loki/api/v1/push
+  - url: http://loki:3100/loki/api/v1/push  # Where to send collected logs
 
+# Log collection targets
 scrape_configs:
+  # System logs collection
+  # Purpose: Collects logs from the system directory
+  # Impact of removal: No system logs in Loki
   - job_name: system_logs
     static_configs:
       - targets:
@@ -19,8 +27,11 @@ scrape_configs:
         labels:
           job: system_logs
           environment: wsl
-          __path__: /home/gnsdud95/the-thinking-cluster/logs/system/*.log
+          __path__: /home/gnsdud95/the-thinking-cluster/logs/system/*.log  # System log files to collect
 
+  # Crash logs collection
+  # Purpose: Collects logs from the crashes directory
+  # Impact of removal: No crash logs in Loki
   - job_name: crash_logs
     static_configs:
       - targets:
@@ -28,8 +39,11 @@ scrape_configs:
         labels:
           job: crash_logs
           environment: wsl
-          __path__: /home/gnsdud95/the-thinking-cluster/logs/crashes/*.log
+          __path__: /home/gnsdud95/the-thinking-cluster/logs/crashes/*.log  # Crash log files to collect
 
+  # Docker logs collection
+  # Purpose: Collects logs from Docker containers
+  # Impact of removal: No Docker container logs in Loki
   - job_name: docker_logs
     static_configs:
       - targets:
@@ -37,8 +51,11 @@ scrape_configs:
         labels:
           job: docker_logs
           environment: wsl
-          __path__: /var/lib/docker/containers/*/*.log
+          __path__: /var/lib/docker/containers/*/*.log  # Docker container log files to collect
 
+  # WSL logs collection
+  # Purpose: Collects logs from WSL
+  # Impact of removal: No WSL logs in Loki
   - job_name: wsl_logs
     static_configs:
       - targets:
@@ -46,4 +63,4 @@ scrape_configs:
         labels:
           job: wsl_logs
           environment: wsl
-          __path__: /var/log/wsl/*.log
+          __path__: /var/log/wsl/*.log  # WSL log files to collect

@@ -1,32 +1,42 @@
+# Prometheus Alert Rules Configuration
+# Purpose: Defines conditions that trigger alerts when metrics exceed thresholds
+# Impact of removal: No automated alerts for system issues
+
 groups:
-  - name: thinking_cluster
+  - name: thinking_cluster  # Group name for organizing related alerts
     rules:
-      # Node availability
+      # Node availability alert
+      # Purpose: Detects when a monitored node becomes unreachable
+      # Impact of removal: No notification when nodes go down
       - alert: NodeDown
-        expr: up == 0
-        for: 1m
+        expr: up == 0  # Triggers when node exporter is not responding
+        for: 1m  # Must be down for 1 minute before alerting
         labels:
-          severity: critical
+          severity: critical  # Highest severity level
         annotations:
           summary: "Node {{ $labels.instance }} is down"
           description: "Node {{ $labels.instance }} has been down for more than 1 minute."
 
-      # High CPU usage
+      # High CPU usage alert
+      # Purpose: Detects when CPU usage is consistently high
+      # Impact of removal: No warning about CPU overload
       - alert: HighCPUUsage
-        expr: 100 - (avg by (instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
-        for: 5m
+        expr: 100 - (avg by (instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80  # CPU usage > 80%
+        for: 5m  # Must be high for 5 minutes before alerting
         labels:
-          severity: warning
+          severity: warning  # Medium severity level
         annotations:
           summary: "High CPU usage on {{ $labels.instance }}"
           description: "CPU usage is above 80% for 5 minutes."
 
-      # High Disk usage
+      # High Disk usage alert
+      # Purpose: Detects when disk space is running low
+      # Impact of removal: No warning about disk space issues
       - alert: HighDiskUsage
-        expr: 100 - ((node_filesystem_avail_bytes{mountpoint="/"} * 100) / node_filesystem_size_bytes{mountpoint="/"}) > 85
-        for: 5m
+        expr: 100 - ((node_filesystem_avail_bytes{mountpoint="/"} * 100) / node_filesystem_size_bytes{mountpoint="/"}) > 85  # Disk usage > 85%
+        for: 5m  # Must be high for 5 minutes before alerting
         labels:
-          severity: warning
+          severity: warning  # Medium severity level
         annotations:
           summary: "High disk usage on {{ $labels.instance }}"
           description: "Disk usage is above 85% for 5 minutes."

@@ -1,18 +1,21 @@
 #!/bin/bash
 
 # Backup Manager Script
-# Handles automated backups of services and cleanup of old backups
+# Purpose: Creates timestamped backups of all service configurations and data
+# Impact of removal: No automated backups of the monitoring stack
 
 # Configuration
 # Determine Project Root dynamically
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)" # Assumes scripts/ is one level below project root
 
-BACKUP_ROOT="$PROJECT_ROOT/backups"
-TIMESTAMP=$(date +%Y-%m-%d-%H%M)
-BACKUP_DIR="$BACKUP_ROOT/$TIMESTAMP"
+BACKUP_ROOT="$PROJECT_ROOT/backups"  # Where to store backups
+TIMESTAMP=$(date +%Y-%m-%d-%H%M)  # Current timestamp for backup directory
+BACKUP_DIR="$BACKUP_ROOT/$TIMESTAMP"  # Full path to backup directory
 
 # List of service configuration directories to backup (relative to PROJECT_ROOT)
+# Purpose: Defines which services need their configurations backed up
+# Impact of removal: No service configurations would be backed up
 declare -A SERVICES_TO_BACKUP_CONFIGS=(\
     ["grafana"]="grafana" \
     ["prometheus"]="prometheus" \
@@ -25,20 +28,24 @@ declare -A SERVICES_TO_BACKUP_CONFIGS=(\
 mkdir -p "$BACKUP_DIR"
 
 # Function to clean up old backups
+# Purpose: Removes backups older than specified time periods
+# Impact of removal: No automatic cleanup of old backups
 cleanup_old_backups() {
     echo "🧹 Cleaning up old backups..."
     
     # Remove backups older than 3 days
-    find "$BACKUP_ROOT" -maxdepth 1 -type d -mtime +3 -exec rm -rf {} \\;
+    find "$BACKUP_ROOT" -maxdepth 1 -type d -mtime +3 -exec rm -rf {} \;
     
     # Remove auto-generated backups older than 45 minutes (if applicable to your naming)
-    # find "$BACKUP_ROOT" -maxdepth 1 -type d -name "auto-*" -mmin +45 -exec rm -rf {} \\;
+    # find "$BACKUP_ROOT" -maxdepth 1 -type d -name "auto-*" -mmin +45 -exec rm -rf {} \;
     
     # Remove empty directories
     find "$BACKUP_ROOT" -type d -empty -delete
 }
 
 # Function to backup a service's configuration
+# Purpose: Creates a compressed archive of a service's configuration
+# Impact of removal: No individual service configuration backups
 backup_service_config() {
     local service_name=$1
     local service_config_dir_relative=$2 # Relative path from PROJECT_ROOT e.g., "grafana"
@@ -63,6 +70,8 @@ for service_name in "${!SERVICES_TO_BACKUP_CONFIGS[@]}"; do
 done
 
 # Backup docker-compose.yml file
+# Purpose: Preserves the main stack configuration
+# Impact of removal: No backup of the main stack configuration
 if [ -f "$PROJECT_ROOT/docker-compose.yml" ]; then
     echo "📦 Backing up docker-compose.yml..."
     cp "$PROJECT_ROOT/docker-compose.yml" "$BACKUP_DIR/docker-compose.yml"
@@ -70,18 +79,25 @@ else
     echo "⚠️  Warning: docker-compose.yml not found at $PROJECT_ROOT/docker-compose.yml"
 fi
 
+# Backup scripts directory
+# Purpose: Preserves all utility scripts
+# Impact of removal: No backup of utility scripts
 if [ -d "$PROJECT_ROOT/scripts" ]; then
     echo "📦 Backing up scripts..."
     tar -czf "$BACKUP_DIR/scripts.tar.gz" -C "$PROJECT_ROOT" scripts/
 fi
 
 # Backup environment files
+# Purpose: Preserves environment variables and secrets
+# Impact of removal: No backup of environment configuration
 if [ -f "$PROJECT_ROOT/.env" ]; then
     echo "📦 Backing up environment file..."
     cp "$PROJECT_ROOT/.env" "$BACKUP_DIR/.env" # Copy to backup dir, not just root of it
 fi
 
 # Create manifest
+# Purpose: Documents the contents of the backup
+# Impact of removal: No documentation of backup contents
 echo "📝 Creating backup manifest..."
 echo "Backup created on $(date)" > "$BACKUP_DIR/manifest.txt"
 echo "Contents:" >> "$BACKUP_DIR/manifest.txt"

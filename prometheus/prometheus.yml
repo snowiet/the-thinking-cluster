@@ -1,21 +1,31 @@
+# Prometheus main configuration file
+# Purpose: Defines how Prometheus collects metrics and manages alerts
+# Impact of removal: Prometheus would not know what to scrape or how to handle alerts
+
 global:
-  scrape_interval: 5s  # How often to scrape targets
+  scrape_interval: 5s  # How often to scrape targets - affects data granularity and resource usage
 
 alerting:
   alertmanagers:
     - static_configs:
-        - targets: ['alertmanager:9093']
+        - targets: ['alertmanager:9093']  # Where to send alerts for processing
 
 rule_files:
-  - "alert_rules.yml"
+  - "alert_rules.yml"  # File containing alert rules
 
 scrape_configs:
+  # WSL Machine metrics collection
+  # Purpose: Collects metrics from the WSL host machine
+  # Impact of removal: No metrics from WSL machine
   - job_name: 'WSL_Machine'
     static_configs:
-      - targets: ['172.22.160.173:9100']
+      - targets: ['172.22.160.173:9100']  # Node Exporter endpoint in WSL
 
+  # Azure VM metrics collection
+  # Purpose: Collects metrics from the Azure VM
+  # Impact of removal: No metrics from Azure VM
   - job_name: "azure_vm"
     static_configs:
-      - targets: ["20.248.240.121:9100"]
+      - targets: ["20.248.240.121:9100"]  # Node Exporter endpoint in Azure VM
 
 

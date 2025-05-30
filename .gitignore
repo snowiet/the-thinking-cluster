@@ -14,3 +14,10 @@ Thumbs.db
 
 prometheus_inspect.txt
 config/local/
+
+# Loki data
+loki/chunks/
+loki/index/
+loki/wal/
+loki/cache/
+loki/boltdb-shipper/

@@ -1,12 +1,16 @@
-apiVersion: 1
+# Grafana Dashboard Provisioning Configuration
+# Purpose: Automatically loads and manages dashboards in Grafana
+# Impact of removal: Dashboards would need to be manually imported
+
+apiVersion: 1  # Configuration version
 
 providers:
-  - name: 'default'
-    orgId: 1
-    folder: ''
-    type: file
-    disableDeletion: false
-    editable: true
-    updateIntervalSeconds: 10
+  - name: 'default'  # Provider name
+    orgId: 1  # Organization ID
+    folder: ''  # Root folder for dashboards
+    type: file  # Load dashboards from files
+    disableDeletion: false  # Allow dashboard deletion
+    editable: true  # Allow dashboard editing
+    updateIntervalSeconds: 10  # How often to check for updates
     options:
-      path: /etc/grafana/dashboards
+      path: /etc/grafana/dashboards  # Where to look for dashboard files

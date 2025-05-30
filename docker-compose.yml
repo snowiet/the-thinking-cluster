@@ -1,78 +1,101 @@
+# Docker Compose configuration for The Thinking Cluster monitoring stack
+# This file defines all the services that make up the monitoring infrastructure
+# Removing this file would prevent the entire stack from running
+
 services:
+  # Grafana - Visualization and dashboard platform
+  # Purpose: Provides web interface for viewing metrics and logs
+  # Impact of removal: No visualization of metrics and logs
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
     ports:
-      - "3000:3000"
+      - "3000:3000"  # Web interface port
     volumes:
-      - /home/gnsdud95/the-thinking-cluster/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
-      - /home/gnsdud95/the-thinking-cluster/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
-      - /home/gnsdud95/the-thinking-cluster/grafana/dashboards:/etc/grafana/dashboards
+      - /home/gnsdud95/the-thinking-cluster/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources  # Data source configurations
+      - /home/gnsdud95/the-thinking-cluster/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards  # Dashboard configurations
+      - /home/gnsdud95/the-thinking-cluster/grafana/dashboards:/etc/grafana/dashboards  # Custom dashboards
     environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=admin
-      - GF_USERS_ALLOW_SIGN_UP=false
-    user: "472"
+      - GF_SECURITY_ADMIN_USER=admin  # Default admin username
+      - GF_SECURITY_ADMIN_PASSWORD=admin  # Default admin password
+      - GF_USERS_ALLOW_SIGN_UP=false  # Disable public sign-ups
+    user: "472"  # Run as grafana user
     depends_on:
-      - prometheus
-    restart: unless-stopped
+      - prometheus  # Ensure Prometheus is running first
+    restart: unless-stopped  # Restart container unless explicitly stopped
 
+  # Node Exporter - System metrics collector
+  # Purpose: Collects hardware and OS metrics from the host system
+  # Impact of removal: No system metrics collection
   node-exporter:
     image: prom/node-exporter:latest
     container_name: node-exporter
     ports:
-      - "9100:9100"
+      - "9100:9100"  # Metrics endpoint port
     restart: unless-stopped
 
+  # Prometheus - Metrics storage and alerting
+  # Purpose: Stores metrics and evaluates alert rules
+  # Impact of removal: No metrics storage or alert evaluation
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
     volumes:
-      - ./prometheus:/etc/prometheus
+      - ./prometheus:/etc/prometheus  # Configuration and rules
     command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--web.enable-lifecycle'
+      - '--config.file=/etc/prometheus/prometheus.yml'  # Main config file
+      - '--web.enable-lifecycle'  # Enable config reloading
     ports:
-      - "9090:9090"
+      - "9090:9090"  # Web interface port
     restart: unless-stopped
 
+  # Alertmanager - Alert routing and notification
+  # Purpose: Handles alert routing and sends notifications
+  # Impact of removal: No alert notifications
   alertmanager:
     image: prom/alertmanager
     container_name: alertmanager
     ports:
-      - "9093:9093"
+      - "9093:9093"  # Web interface port
     volumes:
-      - ./alertmanager:/etc/alertmanager/
+      - ./alertmanager:/etc/alertmanager/  # Configuration
     command:
-      - '--config.file=/etc/alertmanager/alertmanager.yml'
+      - '--config.file=/etc/alertmanager/alertmanager.yml'  # Main config file
     restart: unless-stopped
 
+  # Loki - Log aggregation system
+  # Purpose: Stores and indexes logs
+  # Impact of removal: No log storage
   loki:
     image: grafana/loki:2.9.4
     container_name: loki
-    user: "1000:1000"
+    user: "1000:1000"  # Run as non-root user
     ports:
-      - "3100:3100"
+      - "3100:3100"  # API port
     volumes:
-      - ./loki:/loki:rw
-      - ./loki/local-config.yaml:/etc/loki/local-config.yaml:ro
+      - ./loki:/loki:rw  # Data storage
+      - ./loki/local-config.yaml:/etc/loki/local-config.yaml:ro  # Configuration
     command: -config.file=/etc/loki/local-config.yaml
     restart: unless-stopped
 
+  # Promtail - Log collector
+  # Purpose: Collects logs and sends them to Loki
+  # Impact of removal: No log collection
   promtail:
     image: grafana/promtail:2.9.4
     container_name: promtail
     volumes:
-      - /var/lib/docker/containers:/var/lib/docker/containers:ro
-      - ./promtail/promtail-config.yaml:/etc/promtail/promtail-config.yaml
-      - ./logs:/home/gnsdud95/the-thinking-cluster/logs
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro  # Docker logs
+      - ./promtail/promtail-config.yaml:/etc/promtail/promtail-config.yaml  # Configuration
+      - ./logs:/home/gnsdud95/the-thinking-cluster/logs  # Application logs
     command: -config.file=/etc/promtail/promtail-config.yaml
     ports:
-      - "9080:9080"
+      - "9080:9080"  # Metrics endpoint port
     restart: unless-stopped
 
+# Named volumes for persistent data storage
 volumes:
-  grafana_data:
+  grafana_data:  # Grafana persistent data
     driver: local
-  loki_data:
+  loki_data:  # Loki persistent data
     driver: local 
