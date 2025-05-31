@@ -8,7 +8,6 @@ services:
   # Impact of removal: No visualization of metrics and logs
   grafana:
     image: grafana/grafana:latest
-    container_name: grafana
     ports:
       - "3000:3000"  # Web interface port
     volumes:
@@ -29,7 +28,6 @@ services:
   # Impact of removal: No system metrics collection
   node-exporter:
     image: prom/node-exporter:latest
-    container_name: node-exporter
     ports:
       - "9100:9100"  # Metrics endpoint port
     restart: unless-stopped
@@ -39,7 +37,6 @@ services:
   # Impact of removal: No metrics storage or alert evaluation
   prometheus:
     image: prom/prometheus:latest
-    container_name: prometheus
     volumes:
       - ./prometheus:/etc/prometheus  # Configuration and rules
     command:
@@ -54,7 +51,6 @@ services:
   # Impact of removal: No alert notifications
   alertmanager:
     image: prom/alertmanager
-    container_name: alertmanager
     ports:
       - "9093:9093"  # Web interface port
     volumes:
@@ -68,8 +64,7 @@ services:
   # Impact of removal: No log storage
   loki:
     image: grafana/loki:2.9.4
-    container_name: loki
-    user: "1000:1000"  # Run as non-root user
+    user: "1000:1000"  # WSL-safe: matches file ownership on bind-mounted volume
     ports:
       - "3100:3100"  # API port
     volumes:
@@ -83,7 +78,6 @@ services:
   # Impact of removal: No log collection
   promtail:
     image: grafana/promtail:2.9.4
-    container_name: promtail
     volumes:
       - /var/lib/docker/containers:/var/lib/docker/containers:ro  # Docker logs
       - ./promtail/promtail-config.yaml:/etc/promtail/promtail-config.yaml  # Configuration

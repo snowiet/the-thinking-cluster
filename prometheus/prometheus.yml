@@ -28,4 +28,31 @@ scrape_configs:
     static_configs:
       - targets: ["20.248.240.121:9100"]  # Node Exporter endpoint in Azure VM
 
+  # Promtail service health check
+  # Purpose: Detects if Promtail is down or unreachable
+  # Impact of removal: No visibility into Promtail service health
+  - job_name: 'promtail'
+    static_configs:
+      - targets: ['promtail:9080']  # Promtail metrics endpoint
+
+  # Loki service health check
+  # Purpose: Detects if Loki is down or not receiving logs
+  # Impact of removal: No alerting if Loki becomes unresponsive
+  - job_name: 'loki'
+    static_configs:
+      - targets: ['loki:3100']  # Loki API endpoint
+
+  # Alertmanager service health check
+  # Purpose: Detects if Alertmanager is not available to receive alerts
+  # Impact of removal: Alerts may be generated but never delivered
+  - job_name: 'alertmanager'
+    static_configs:
+      - targets: ['alertmanager:9093']  # Alertmanager HTTP endpoint
+
+  # Grafana service health check
+  # Purpose: Detects if Grafana is down or not exposing dashboards
+  # Impact of removal: No visibility into Grafana availability
+  - job_name: 'grafana'
+    static_configs:
+      - targets: ['grafana:3000']  # Grafana API/metrics endpoint
 

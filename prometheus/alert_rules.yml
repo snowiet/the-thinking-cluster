@@ -5,17 +5,66 @@
 groups:
   - name: thinking_cluster  # Group name for organizing related alerts
     rules:
-      # Node availability alert
-      # Purpose: Detects when a monitored node becomes unreachable
-      # Impact of removal: No notification when nodes go down
-      - alert: NodeDown
-        expr: up == 0  # Triggers when node exporter is not responding
-        for: 1m  # Must be down for 1 minute before alerting
+
+      # Loki availability alert
+      # Purpose: Detects when Loki becomes unreachable
+      # Impact of removal: No visibility into Loki's availability
+      - alert: LokiDown
+        expr: up{job="loki"} == 0
+        for: 1m
         labels:
-          severity: critical  # Highest severity level
+          severity: critical
         annotations:
-          summary: "Node {{ $labels.instance }} is down"
-          description: "Node {{ $labels.instance }} has been down for more than 1 minute."
+          summary: "Loki is down"
+          description: "Loki has been unreachable for more than 1 minute."
+
+      # Promtail availability alert
+      # Purpose: Detects when Promtail stops responding
+      # Impact of removal: Log ingestion issues may go unnoticed
+      - alert: PromtailDown
+        expr: up{job="promtail"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Promtail is down"
+          description: "Promtail has been unreachable for more than 1 minute."
+
+      # Grafana availability alert
+      # Purpose: Detects when Grafana UI is inaccessible
+      # Impact of removal: Monitoring dashboards may be unavailable
+      - alert: GrafanaDown
+        expr: up{job="grafana"} == 0
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Grafana is down"
+          description: "Grafana has been unreachable for more than 1 minute."
+
+      # Alertmanager availability alert
+      # Purpose: Detects when Alertmanager is unreachable
+      # Impact of removal: Alerts may not be delivered
+      - alert: AlertmanagerDown
+        expr: up{job="alertmanager"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Alertmanager is down"
+          description: "Alertmanager has been unreachable for more than 1 minute."
+
+      # Node exporter availability alert
+      # Purpose: Detects if metrics collection from the WSL node fails
+      # Impact of removal: No indication of infrastructure-level metrics
+      - alert: NodeExporterDown
+        expr: up{job="WSL_Machine"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Node Exporter on WSL is down"
+          description: "Node Exporter instance {{ $labels.instance }} has been unreachable for more than 1 minute."
 
       # High CPU usage alert
       # Purpose: Detects when CPU usage is consistently high

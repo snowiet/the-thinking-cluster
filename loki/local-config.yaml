@@ -8,7 +8,6 @@ auth_enabled: false  # Disable authentication for development
 # Server configuration
 server:
   http_listen_port: 3100  # HTTP API port
-  grpc_listen_port: 9095  # gRPC port for internal communication
   log_level: debug  # Logging verbosity level
 
 # Common configuration for all components
