@@ -411,95 +411,7 @@
           "step": 240
         }
       ],
-      "title": "SWAP Used (WSL Only)",
-      "type": "gauge"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
-      },
-      "description": "Used Root FS (Azure Only)",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 1,
-          "mappings": [
-            {
-              "options": {
-                "match": "null",
-                "result": {
-                  "text": "N/A"
-                }
-              },
-              "type": "special"
-            }
-          ],
-          "max": 100,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "rgba(50, 172, 45, 0.97)"
-              },
-              {
-                "color": "rgba(237, 129, 40, 0.89)",
-                "value": 80
-              },
-              {
-                "color": "rgba(245, 54, 54, 0.9)",
-                "value": 90
-              }
-            ]
-          },
-          "unit": "percent"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 3,
-        "x": 12,
-        "y": 1
-      },
-      "id": 154,
-      "options": {
-        "minVizHeight": 75,
-        "minVizWidth": 75,
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "sizing": "auto"
-      },
-      "pluginVersion": "12.0.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "editorMode": "code",
-          "exemplar": false,
-	  "expr": "(\n  node_filesystem_size_bytes{instance=\"$node\", job=\"$job\", mountpoint=\"/\"} - node_filesystem_avail_bytes{instance=\"$node\", job=\"$job\", mountpoint=\"/\"}\n) / node_filesystem_size_bytes{instance=\"$node\", job=\"$job\", mountpoint=\"/\"} * 100",
-          "format": "time_series",
-          "instant": true,
-          "intervalFactor": 1,
-          "range": false,
-          "refId": "A",
-          "step": 240
-        }
-      ],
-      "title": "Root FS Used (Azure Only)",
+      "title": "SWAP Used",
       "type": "gauge"
     },
     {
@@ -813,7 +725,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Swap used (WSL Only)"
+              "options": "Swap used"
             },
             "properties": [
               {
@@ -973,7 +885,7 @@
           "expr": "(node_memory_SwapTotal_bytes{instance=\"$node\",job=\"$job\"} - node_memory_SwapFree_bytes{instance=\"$node\",job=\"$job\"})",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "Swap used (WSL Only)",
+          "legendFormat": "Swap used",
           "range": true,
           "refId": "E",
           "step": 240
