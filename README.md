@@ -27,7 +27,7 @@ Access services:
 - Prometheus → [http://localhost:9090](http://localhost:9090)
 - Node Exporter → [http://localhost:9100](http://localhost:9100)
 - Alertmanager → [http://localhost:9093](http://localhost:9093)
-- Loki → [http://localhost:3101](http://localhost:3101) (API for Grafana, direct UI available at `/loki/api/v1/status` or similar, depending on version)
+- Loki → [http://localhost:3100](http://localhost:3100) (API for Grafana, direct UI available at `/loki/api/v1/status` or similar, depending on version)
 - Promtail → (No direct access - ships logs to Loki)
 
 ## 📁 Project Structure
