@@ -19,7 +19,6 @@ BACKUP_DIR="$BACKUP_ROOT/$TIMESTAMP"  # Full path to backup directory
 declare -A SERVICES_TO_BACKUP_CONFIGS=(\
     ["grafana"]="grafana" \
     ["prometheus"]="prometheus" \
-    ["alertmanager"]="alertmanager" \
     ["loki"]="loki" \
     ["promtail"]="promtail" \
 )
@@ -36,9 +35,9 @@ cleanup_old_backups() {
     # Remove backups older than 3 days
     find "$BACKUP_ROOT" -maxdepth 1 -type d -mtime +3 -exec rm -rf {} \;
     
-    # Remove auto-generated backups older than 45 minutes (if applicable to your naming)
-    # find "$BACKUP_ROOT" -maxdepth 1 -type d -name "auto-*" -mmin +45 -exec rm -rf {} \;
-    
+    # Remove backup directories created within the last 60 minutes (excluding current)
+    find "$BACKUP_ROOT" -maxdepth 1 -mindepth 1 -type d -mmin -60 ! -path "$BACKUP_DIR" -exec rm -rf {} \;
+
     # Remove empty directories
     find "$BACKUP_ROOT" -type d -empty -delete
 }

@@ -1,5 +1,0 @@
-Backup created on Wed May 28 21:46:13 AEST 2025
-Contents:
-/home/gnsdud95/the-thinking-cluster/backups/2025-05-28-2146:
-manifest.txt
-scripts.tar.gz

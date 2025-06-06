@@ -11,9 +11,9 @@ services:
     ports:
       - "3000:3000"  # Web interface port
     volumes:
-      - /home/gnsdud95/the-thinking-cluster/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources  # Data source configurations
-      - /home/gnsdud95/the-thinking-cluster/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards  # Dashboard configurations
-      - /home/gnsdud95/the-thinking-cluster/grafana/dashboards:/etc/grafana/dashboards  # Custom dashboards
+      - $HOME/the-thinking-cluster/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources  # Data source configurations
+      - $HOME/the-thinking-cluster/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards  # Dashboard configurations
+      - $HOME/the-thinking-cluster/grafana/dashboards:/etc/grafana/dashboards  # Custom dashboards
     environment:
       - GF_SECURITY_ADMIN_USER=admin  # Default admin username
       - GF_SECURITY_ADMIN_PASSWORD=admin  # Default admin password
@@ -45,21 +45,7 @@ services:
     ports:
       - "9090:9090"  # Web interface port
     restart: unless-stopped
-
-  # Disabled alertmanager for now.
-  # Alertmanager - Alert routing and notification
-  # Purpose: Handles alert routing and sends notifications
-  # Impact of removal: No alert notifications
-  #alertmanager:
-  #  image: prom/alertmanager
-  #  ports:
-  #    - "9093:9093"  # Web interface port
-  #  volumes:
-  #    - ./alertmanager:/etc/alertmanager/  # Configuration
-  #  command:
-  #    - '--config.file=/etc/alertmanager/alertmanager.yml'  # Main config file
-  #  restart: unless-stopped
-
+    
   # Loki - Log aggregation system
   # Purpose: Stores and indexes logs
   # Impact of removal: No log storage
@@ -82,7 +68,7 @@ services:
     volumes:
       - /var/lib/docker/containers:/var/lib/docker/containers:ro  # Docker logs
       - ./promtail/promtail-config.yaml:/etc/promtail/promtail-config.yaml  # Configuration
-      - ./logs:/home/gnsdud95/the-thinking-cluster/logs  # Application logs
+      - ./logs:$HOME/the-thinking-cluster/logs  # Application logs
     command: -config.file=/etc/promtail/promtail-config.yaml
     ports:
       - "9080:9080"  # Metrics endpoint port

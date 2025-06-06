@@ -5,11 +5,6 @@
 global:
   scrape_interval: 5s  # How often to scrape targets - affects data granularity and resource usage
 
-#alerting:
-#  alertmanagers:
-#    - static_configs:
-#        - targets: ['alertmanager:9093']  # Where to send alerts for processing
-
 rule_files:
   - "alert_rules.yml"  # File containing alert rules
 
@@ -19,15 +14,8 @@ scrape_configs:
   # Impact of removal: No metrics from WSL machine
   - job_name: 'WSL_Machine'
     static_configs:
-      - targets: ['172.22.160.173:9100']  # Node Exporter endpoint in WSL
+      - targets: ['the-thinking-cluster-node-exporter-1:9100']  # Node Exporter endpoint in WSL
 
-  # Azure VM metrics collection - currently disabled.
-  # Purpose: Collects metrics from the Azure VM
-  # Impact of removal: No metrics from Azure VM
-  #- job_name: "azure_vm"
-  #  static_configs:
-  #    - targets: ["20.248.240.121:9100"]  # Node Exporter endpoint in Azure VM
-  
   # Promtail service health check
   # Purpose: Detects if Promtail is down or unreachable
   # Impact of removal: No visibility into Promtail service health
@@ -41,13 +29,6 @@ scrape_configs:
   - job_name: 'loki'
     static_configs:
       - targets: ['loki:3100']  # Loki API endpoint
-
-  # Alertmanager service health check
-  # Purpose: Detects if Alertmanager is not available to receive alerts
-  # Impact of removal: Alerts may be generated but never delivered
-  #- job_name: 'alertmanager'
-  #  static_configs:
-  #    - targets: ['alertmanager:9093']  # Alertmanager HTTP endpoint
 
   # Grafana service health check
   # Purpose: Detects if Grafana is down or not exposing dashboards

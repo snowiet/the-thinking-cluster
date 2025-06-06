@@ -9,7 +9,7 @@ server:
 
 # Position tracking configuration
 positions:
-  filename: /home/gnsdud95/the-thinking-cluster/logs/promtail-positions.yaml  # Where to store file read positions
+  filename: $HOME/the-thinking-cluster/logs/promtail-positions.yaml  # Where to store file read positions
 
 # Loki client configuration
 clients:
@@ -27,7 +27,7 @@ scrape_configs:
         labels:
           job: system_logs
           environment: wsl
-          __path__: /home/gnsdud95/the-thinking-cluster/logs/system/*.log  # System log files to collect
+          __path__: $HOME/the-thinking-cluster/logs/system/*.log  # System log files to collect
 
   # Crash logs collection
   # Purpose: Collects logs from the crashes directory
@@ -39,7 +39,7 @@ scrape_configs:
         labels:
           job: crash_logs
           environment: wsl
-          __path__: /home/gnsdud95/the-thinking-cluster/logs/crashes/*.log  # Crash log files to collect
+          __path__: $HOME/the-thinking-cluster/logs/crashes/*.log  # Crash log files to collect
 
   # Docker logs collection
   # Purpose: Collects logs from Docker containers

@@ -42,18 +42,6 @@ groups:
           summary: "Grafana is down"
           description: "Grafana has been unreachable for more than 1 minute."
 
-      # Alertmanager availability alert
-      # Purpose: Detects when Alertmanager is unreachable
-      # Impact of removal: Alerts may not be delivered
-      - alert: AlertmanagerDown
-        expr: up{job="alertmanager"} == 0
-        for: 1m
-        labels:
-          severity: critical
-        annotations:
-          summary: "Alertmanager is down"
-          description: "Alertmanager has been unreachable for more than 1 minute."
-
       # Node exporter availability alert
       # Purpose: Detects if metrics collection from the WSL node fails
       # Impact of removal: No indication of infrastructure-level metrics

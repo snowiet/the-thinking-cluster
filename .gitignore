@@ -13,6 +13,8 @@ logs/promtail-positions.yaml
 Thumbs.db
 prometheus_inspect.txt
 config/local/
+.code-workspace
+backups/
 
 # Loki data
 # Keep the folders, not the contents
@@ -31,6 +33,4 @@ loki/rules/*
 loki/compactor/*
 !loki/compactor/.gitkeep
 
-# VS Code settings
-.vscode/
-.code-workspace
+
