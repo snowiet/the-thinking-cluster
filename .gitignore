@@ -13,7 +13,7 @@ logs/promtail-positions.yaml
 Thumbs.db
 prometheus_inspect.txt
 config/local/
-.code-workspace
+the-thinking-cluster.code-workspace
 backups/
 
 # Loki data

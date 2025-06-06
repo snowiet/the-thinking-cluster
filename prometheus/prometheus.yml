@@ -12,9 +12,9 @@ scrape_configs:
   # WSL Machine metrics collection
   # Purpose: Collects metrics from the WSL host machine
   # Impact of removal: No metrics from WSL machine
-  - job_name: 'WSL_Machine'
+  - job_name: 'node-exporter - WSL'
     static_configs:
-      - targets: ['the-thinking-cluster-node-exporter-1:9100']  # Node Exporter endpoint in WSL
+      - targets: ['node-exporter:9100']  # Node Exporter endpoint in WSL
 
   # Promtail service health check
   # Purpose: Detects if Promtail is down or unreachable
