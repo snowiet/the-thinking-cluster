@@ -46,18 +46,19 @@ services:
       - "9090:9090"  # Web interface port
     restart: unless-stopped
 
+  # Disabled alertmanager for now.
   # Alertmanager - Alert routing and notification
   # Purpose: Handles alert routing and sends notifications
   # Impact of removal: No alert notifications
-  alertmanager:
-    image: prom/alertmanager
-    ports:
-      - "9093:9093"  # Web interface port
-    volumes:
-      - ./alertmanager:/etc/alertmanager/  # Configuration
-    command:
-      - '--config.file=/etc/alertmanager/alertmanager.yml'  # Main config file
-    restart: unless-stopped
+  #alertmanager:
+  #  image: prom/alertmanager
+  #  ports:
+  #    - "9093:9093"  # Web interface port
+  #  volumes:
+  #    - ./alertmanager:/etc/alertmanager/  # Configuration
+  #  command:
+  #    - '--config.file=/etc/alertmanager/alertmanager.yml'  # Main config file
+  #  restart: unless-stopped
 
   # Loki - Log aggregation system
   # Purpose: Stores and indexes logs

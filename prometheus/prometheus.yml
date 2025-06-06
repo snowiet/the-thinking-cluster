@@ -5,10 +5,10 @@
 global:
   scrape_interval: 5s  # How often to scrape targets - affects data granularity and resource usage
 
-alerting:
-  alertmanagers:
-    - static_configs:
-        - targets: ['alertmanager:9093']  # Where to send alerts for processing
+#alerting:
+#  alertmanagers:
+#    - static_configs:
+#        - targets: ['alertmanager:9093']  # Where to send alerts for processing
 
 rule_files:
   - "alert_rules.yml"  # File containing alert rules
@@ -45,9 +45,9 @@ scrape_configs:
   # Alertmanager service health check
   # Purpose: Detects if Alertmanager is not available to receive alerts
   # Impact of removal: Alerts may be generated but never delivered
-  - job_name: 'alertmanager'
-    static_configs:
-      - targets: ['alertmanager:9093']  # Alertmanager HTTP endpoint
+  #- job_name: 'alertmanager'
+  #  static_configs:
+  #    - targets: ['alertmanager:9093']  # Alertmanager HTTP endpoint
 
   # Grafana service health check
   # Purpose: Detects if Grafana is down or not exposing dashboards
