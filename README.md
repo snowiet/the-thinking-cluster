@@ -101,12 +101,16 @@ docker compose ps
 
 ![Active container list managed via Docker Compose, showing uptime and port exposure for all services.](images/Docker%20Containers.png)
 
+*All monitoring services running successfully with proper port mapping and uptime tracking.*
+
 ### Access Points
 - **Grafana Dashboard**: http://localhost:3000 (admin/admin)
 - **Prometheus**: http://localhost:9090
 - **Node Exporter**: http://localhost:9100
 
 ![Prometheus actively scraping metrics from Loki, Grafana, Promtail, and Node Exporter — all services are healthy and reporting in.](images/Prometheus%20Targets.png)
+
+*Prometheus service discovery showing all targets in healthy state with successful metric collection.*
 
 
 ### Environment Considerations
@@ -132,16 +136,11 @@ Modern infrastructure demands more than simple uptime monitoring. True observabi
 
 ![A unified Grafana dashboard visualizing CPU usage, memory allocation, network traffic, and disk space.](images/Grafana%20Dashboard.png)
 
-*Data source-managed alerting rules configured via Prometheus — covering service uptime and resource thresholds.*
+*Real-time system metrics visualization with comprehensive resource monitoring and trend analysis.*
 
 ![Data source-managed alerting rules configured via Prometheus — covering service uptime and resource thresholds.](images/Prometheus%20Alert%20rules.png)
 
-### Future Intent
-This MVP serves as a foundation for more sophisticated observability practices:
-- **OpenTelemetry Integration**: Standardized telemetry collection
-- **Automated Remediation**: Self-healing container behaviors
-- **Advanced Alerting**: Intelligent routing and escalation
-- **Distributed Tracing**: End-to-end request flow visibility
+*Pre-configured alerting rules for service health monitoring and resource threshold management.*
 
 ## ⚠️ Known Limitations
 
@@ -165,7 +164,9 @@ This MVP serves as a foundation for more sophisticated observability practices:
 - **Impact**: Security risks and potential privilege escalation.
 - **Mitigation**: Implement least privilege principles and proper user isolation.
 
-## 📈 What's Next
+## 🛠️ Roadmap & Long-Term Vision
+
+This MVP serves as a foundation for more sophisticated observability practices, with a clear progression from immediate improvements to ultimate antifragile systems.
 
 ### Immediate Priorities
 - **Log Filtering**: Implement relevance-based log collection and storage
@@ -173,9 +174,10 @@ This MVP serves as a foundation for more sophisticated observability practices:
 - **Access Control**: Implement proper user permissions and least privilege principles
 
 ### Medium-term Goals
-- **Alert Routing**: Intelligent alert distribution and escalation logic
-- **Self-Healing**: Automated container recovery and health restoration
-- **Performance Optimization**: Resource usage optimization and scaling strategies
+- **OpenTelemetry Integration**: Standardized telemetry collection across all services
+- **Automated Remediation**: Self-healing container behaviors and health restoration
+- **Advanced Alerting**: Intelligent routing, escalation logic, and performance optimization
+- **Distributed Tracing**: End-to-end request flow visibility and bottleneck identification
 
 ### Long-term Vision
 - **Distributed Deployment**: Multi-node monitoring across multiple environments
