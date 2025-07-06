@@ -94,6 +94,32 @@ if [ -f "$PROJECT_ROOT/.env" ]; then
     cp "$PROJECT_ROOT/.env" "$BACKUP_DIR/.env" # Copy to backup dir, not just root of it
 fi
 
+# Backup named volumes (if containers are running)
+# Purpose: Preserves persistent data from Grafana, Prometheus, and Loki
+# Impact of removal: No backup of persistent application data
+echo "📦 Backing up named volumes..."
+if command -v docker &> /dev/null; then
+    # Backup Grafana data
+    if docker volume ls | grep -q "the-thinking-cluster_grafana_data"; then
+        echo "  - Backing up Grafana data volume..."
+        docker run --rm -v "the-thinking-cluster_grafana_data:/data" -v "$BACKUP_DIR:/backup" alpine tar -czf /backup/grafana_data.tar.gz -C /data .
+    fi
+    
+    # Backup Prometheus data
+    if docker volume ls | grep -q "the-thinking-cluster_prometheus_data"; then
+        echo "  - Backing up Prometheus data volume..."
+        docker run --rm -v "the-thinking-cluster_prometheus_data:/data" -v "$BACKUP_DIR:/backup" alpine tar -czf /backup/prometheus_data.tar.gz -C /data .
+    fi
+    
+    # Backup Loki data
+    if docker volume ls | grep -q "the-thinking-cluster_loki_data"; then
+        echo "  - Backing up Loki data volume..."
+        docker run --rm -v "the-thinking-cluster_loki_data:/data" -v "$BACKUP_DIR:/backup" alpine tar -czf /backup/loki_data.tar.gz -C /data .
+    fi
+else
+    echo "⚠️  Warning: Docker not available, skipping volume backups"
+fi
+
 # Create manifest
 # Purpose: Documents the contents of the backup
 # Impact of removal: No documentation of backup contents

@@ -11,9 +11,10 @@ services:
     ports:
       - "3000:3000"  # Web interface port
     volumes:
-      - $HOME/the-thinking-cluster/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources  # Data source configurations
-      - $HOME/the-thinking-cluster/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards  # Dashboard configurations
-      - $HOME/the-thinking-cluster/grafana/dashboards:/etc/grafana/dashboards  # Custom dashboards
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources  # Data source configurations
+      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards  # Dashboard configurations
+      - ./grafana/dashboards:/etc/grafana/dashboards  # Custom dashboards
+      - grafana_data:/var/lib/grafana  # Persistent data storage
     environment:
       - GF_SECURITY_ADMIN_USER=admin  # Default admin username
       - GF_SECURITY_ADMIN_PASSWORD=admin  # Default admin password
@@ -39,9 +40,11 @@ services:
     image: prom/prometheus:latest
     volumes:
       - ./prometheus:/etc/prometheus  # Configuration and rules
+      - prometheus_data:/prometheus  # Persistent metrics storage
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'  # Main config file
       - '--web.enable-lifecycle'  # Enable config reloading
+      - '--storage.tsdb.path=/prometheus'  # Data storage path
     ports:
       - "9090:9090"  # Web interface port
     restart: unless-stopped
@@ -55,8 +58,8 @@ services:
     ports:
       - "3100:3100"  # API port
     volumes:
-      - ./loki:/loki:rw  # Data storage
       - ./loki/local-config.yaml:/etc/loki/local-config.yaml:ro  # Configuration
+      - loki_data:/loki  # Persistent log storage
     command: -config.file=/etc/loki/local-config.yaml
     restart: unless-stopped
 
@@ -68,7 +71,7 @@ services:
     volumes:
       - /var/lib/docker/containers:/var/lib/docker/containers:ro  # Docker logs
       - ./promtail/promtail-config.yaml:/etc/promtail/promtail-config.yaml  # Configuration
-      - ./logs:$HOME/the-thinking-cluster/logs  # Application logs
+      - ./logs:/etc/logs  # Application logs (fixed path)
     command: -config.file=/etc/promtail/promtail-config.yaml
     ports:
       - "9080:9080"  # Metrics endpoint port
@@ -76,7 +79,9 @@ services:
 
 # Named volumes for persistent data storage
 volumes:
-  grafana_data:  # Grafana persistent data
+  grafana_data:  # Grafana persistent data (dashboards, users, preferences)
     driver: local
-  loki_data:  # Loki persistent data
+  prometheus_data:  # Prometheus metrics storage
+    driver: local
+  loki_data:  # Loki log storage
     driver: local 
